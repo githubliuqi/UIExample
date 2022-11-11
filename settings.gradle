@@ -14,6 +14,7 @@ dependencyResolutionManagement {
 }
 rootProject.name = "UIExample"
 include ':app'
+include ':tetris'
 include ':common'
 include ':xlog'
 include ':bugs'
