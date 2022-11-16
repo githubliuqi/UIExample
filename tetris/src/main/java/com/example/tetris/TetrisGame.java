@@ -2,7 +2,7 @@ package com.example.tetris;
 
 import android.content.Context;
 
-import com.example.juiexample.common.TLog;
+import com.example.common.TLog;
 
 public class TetrisGame {
 
@@ -22,6 +22,13 @@ public class TetrisGame {
 
     public TetrisGame start() {
         startActiveBox();
+        return this;
+    }
+
+    public TetrisGame stop() {
+        if (activeBoxThread != null) {
+            activeBoxThread.stopThread();
+        }
         return this;
     }
 
@@ -45,7 +52,7 @@ public class TetrisGame {
 
     private static final class ActiveBoxThread extends Thread {
 
-        boolean bRunning = true;
+        private volatile boolean bRunning = true;
         long interval = 1000; // 回调间隔 1s
         Runnable task;
 
@@ -56,6 +63,11 @@ public class TetrisGame {
 
         public ActiveBoxThread setTask(Runnable task) {
             this.task = task;
+            return this;
+        }
+
+        public ActiveBoxThread stopThread() {
+            bRunning = false;
             return this;
         }
 

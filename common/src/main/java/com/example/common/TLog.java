@@ -1,4 +1,4 @@
-package com.example.juiexample.common;
+package com.example.common;
 
 import android.util.Log;
 

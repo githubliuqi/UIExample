@@ -41,4 +41,10 @@ public class TetrisDialog extends Dialog implements OnEventListener {
             game.start();
         }
     }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        game.stop();
+    }
 }

@@ -8,7 +8,7 @@ import android.text.TextUtils;
 
 import androidx.annotation.NonNull;
 
-import com.example.juiexample.common.TLog;
+import com.example.common.TLog;
 
 import java.util.ArrayList;
 import java.util.HashMap;

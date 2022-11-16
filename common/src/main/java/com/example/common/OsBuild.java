@@ -1,4 +1,4 @@
-package cloud.tencent.liteav.demo.common;
+package com.example.common;
 
 import android.os.Build;
 import android.text.TextUtils;
