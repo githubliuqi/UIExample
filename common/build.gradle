@@ -1,13 +1,11 @@
 plugins {
-    id 'com.android.application'
-    id 'org.jetbrains.kotlin.android'
+    id 'com.android.library'
 }
 
 android {
     compileSdk 32
 
     defaultConfig {
-        applicationId "com.example.uiexample.demo"
         minSdk 21
         targetSdk 32
         versionCode 1
@@ -26,18 +24,12 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
-    kotlinOptions {
-        jvmTarget = '1.8'
-    }
 }
 
 dependencies {
 
-    implementation project(":uiexample")
-    implementation project(":juiexample")
-
-    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.7'
-
+    api "com.blankj:utilcode:1.30.7"
+    api "com.google.code.gson:gson:2.3.1"
 
     implementation 'androidx.core:core-ktx:1.7.0'
     implementation 'androidx.appcompat:appcompat:1.5.1'
