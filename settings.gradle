@@ -15,6 +15,7 @@ dependencyResolutionManagement {
 rootProject.name = "UIExample"
 include ':app'
 include ':common'
+include ':xlog'
 include ':bugs'
 include ':uiexample'
 include ':juiexample'
