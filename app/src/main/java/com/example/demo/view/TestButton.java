@@ -1,4 +1,4 @@
-package com.example.uiexample.demo.view;
+package com.example.demo.view;
 
 import android.content.Context;
 import android.graphics.Color;
