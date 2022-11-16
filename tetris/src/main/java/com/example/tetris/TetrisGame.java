@@ -1,0 +1,76 @@
+package com.example.tetris;
+
+import android.content.Context;
+
+import com.example.juiexample.common.TLog;
+
+public class TetrisGame {
+
+    private static final String TAG = "TetrisGame";
+
+    private Context context;
+    private Runnable activeBoxTask;
+    private ActiveBoxThread activeBoxThread;
+    public TetrisGame(Context context) {
+        this.context = context;
+    }
+
+    public TetrisGame setActiveBoxTask(Runnable task) {
+        activeBoxTask = task;
+        return this;
+    }
+
+    public TetrisGame start() {
+        startActiveBox();
+        return this;
+    }
+
+    public TetrisGame startActiveBox() {
+        if (activeBoxTask == null) {
+            TLog.e(TAG, "activeBoxTask is null");
+            return this;
+        }
+        activeBoxThread = new ActiveBoxThread();
+        activeBoxThread.setTask(activeBoxTask);
+        activeBoxThread.start();
+        return this;
+    }
+
+    public TetrisGame pauseActiveBox() {
+        if (activeBoxThread == null) {
+            return this;
+        }
+        return this;
+    }
+
+    private static final class ActiveBoxThread extends Thread {
+
+        boolean bRunning = true;
+        long interval = 1000; // 回调间隔 1s
+        Runnable task;
+
+        public ActiveBoxThread setInterval(long interval) {
+            this.interval = interval;
+            return this;
+        }
+
+        public ActiveBoxThread setTask(Runnable task) {
+            this.task = task;
+            return this;
+        }
+
+        @Override
+        public void run() {
+            while (bRunning) {
+                try {
+                    Thread.sleep(interval);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                if (task != null) {
+                    task.run();
+                }
+            }
+        }
+    }
+}
