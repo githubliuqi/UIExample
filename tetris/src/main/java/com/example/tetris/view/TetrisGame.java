@@ -1,4 +1,4 @@
-package com.example.tetris;
+package com.example.tetris.view;
 
 import android.content.Context;
 
@@ -8,9 +8,12 @@ public class TetrisGame {
 
     private static final String TAG = "TetrisGame";
 
-    private Context context;
+    private final Context context;
     private Runnable activeBoxTask;
     private ActiveBoxThread activeBoxThread;
+
+    private int score = 0;
+
     public TetrisGame(Context context) {
         this.context = context;
     }
@@ -50,10 +53,19 @@ public class TetrisGame {
         return this;
     }
 
+    public int getScore() {
+        return score;
+    }
+
+    public TetrisGame setScore(int score) {
+        this.score = score;
+        return this;
+    }
+
     private static final class ActiveBoxThread extends Thread {
 
         private volatile boolean bRunning = true;
-        long interval = 1000; // 回调间隔 1s
+        long interval = 500; // 回调间隔 1s
         Runnable task;
 
         public ActiveBoxThread setInterval(long interval) {
