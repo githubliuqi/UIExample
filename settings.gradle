@@ -21,3 +21,7 @@ include ':xlog'
 include ':bugs'
 include ':uiexample'
 include ':juiexample'
+
+// shellapk
+include ':shellapk'
+project(":shellapk").projectDir = new File("./shell/shellapk")
