@@ -3,12 +3,8 @@ package com.example.tetris;
 import android.content.Context;
 import android.util.Size;
 import android.view.Gravity;
-import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
-
-import androidx.appcompat.widget.ViewUtils;
 
 import com.example.juiexample.common.IconButton;
 import com.example.juiexample.event.OnEventListener;

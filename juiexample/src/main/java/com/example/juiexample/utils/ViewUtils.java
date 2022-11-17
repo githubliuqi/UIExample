@@ -9,8 +9,6 @@ import android.widget.RadioGroup;
 import android.widget.Switch;
 import android.widget.TextView;
 
-import androidx.constraintlayout.widget.Group;
-
 public class ViewUtils {
 
     public static final TextView createTextView(Context context) {

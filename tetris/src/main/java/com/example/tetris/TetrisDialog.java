@@ -5,9 +5,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.view.View;
-
-import androidx.annotation.NonNull;
 
 import com.example.juiexample.event.OnEventListener;
 
@@ -16,7 +13,7 @@ public class TetrisDialog extends Dialog implements OnEventListener {
     private final TetrisGame game;
     private final Handler uiHandler = new Handler(Looper.getMainLooper());
 
-    public TetrisDialog(@NonNull Context context) {
+    public TetrisDialog(Context context) {
         super(context, android.R.style.Theme_Light_NoTitleBar_Fullscreen);
         TetrisLayout tetrisLayout = new TetrisLayout(context);
         tetrisLayout.setOnEventListener(this::onEvent);
