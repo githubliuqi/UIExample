@@ -8,7 +8,7 @@ import android.util.Size;
 import android.view.View;
 import android.widget.RelativeLayout;
 
-import com.example.tetris.GameDef.GridType;
+import com.example.tetris.GridType;
 
 public class GridView extends View {
 
@@ -20,16 +20,13 @@ public class GridView extends View {
 
     public GridView(Context context, GridType type) {
         super(context);
+        gradientDrawable.setCornerRadius(3);
         setGridType(type);
     }
 
     public GridView setGridType(GridType type) {
-        if (gridType == type) {
-            return this;
-        }
         gridType = type;
-        int color = getColor();
-        gradientDrawable.setColor(color);
+        gradientDrawable.setColor(gridType.color);
         gradientDrawable.setStroke(strokeWidth, strokeColor);
         setBackground(gradientDrawable);
         return this;
@@ -44,24 +41,6 @@ public class GridView extends View {
 
     public GridType getGridType() {
         return gridType;
-    }
-
-    private int getColor() {
-        if (gridType == GridType.TYPE_DEFAULT) {
-            return Color.GRAY;
-        } else if (gridType == GridType.TYPE_RED) {
-            return Color.RED;
-        } else if (gridType == GridType.TYPE_GREEN) {
-            return Color.GREEN;
-        } else if (gridType == GridType.TYPE_BLUE) {
-            return Color.BLUE;
-        } else if (gridType == GridType.TYPE_MAGENTA) {
-            return Color.MAGENTA;
-        } else if (gridType == GridType.TYPE_YELLOW) {
-            return Color.YELLOW;
-        } else {
-            return Color.GRAY;
-        }
     }
 
     @Override

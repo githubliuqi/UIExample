@@ -1,6 +1,7 @@
 package com.example.tetris.view;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.util.Size;
 import android.view.Gravity;
 import android.widget.LinearLayout;
@@ -10,6 +11,8 @@ import com.example.common.utils.AppUtils;
 import com.example.juiexample.event.OnEventListener;
 import com.example.juiexample.utils.ViewUtils;
 import com.example.tetris.GameDef;
+import com.example.tetris.GridTypeMatrix;
+import com.example.tetris.GridType;
 
 public class TetrisLayout extends LinearLayout {
 
@@ -24,9 +27,11 @@ public class TetrisLayout extends LinearLayout {
         this.context = context;
         setGravity(Gravity.CENTER);
         setOrientation(LinearLayout.VERTICAL);
+        setBackgroundColor(0xFF13223F);
 
-        scoreTextView = ViewUtils.createTextView(context);
+        scoreTextView = createScoreView();
         addView(scoreTextView);
+
         int size = AppUtils.dip2px(20);
         tetrisMainView = new TetrisMainView(context, new Size(size, size));
         init();
@@ -40,13 +45,20 @@ public class TetrisLayout extends LinearLayout {
     }
 
     private void init() {
-        GameDef.GridType[][] gridTypes = new GameDef.GridType[16][20];
-        for (int i = 0; i < gridTypes.length; i++) {
-            for (int j = 0; j < gridTypes[0].length; j++) {
-                gridTypes[i][j] = GameDef.GridType.TYPE_DEFAULT;
+        GridTypeMatrix matrix = new GridTypeMatrix() {
+            @Override
+            protected GridType[][] createGridType() {
+                GridType[][] gridTypes = new GridType[20][16];
+                for (int i = 0; i < gridTypes.length; i++) {
+                    for (int j = 0; j < gridTypes[0].length; j++) {
+                        gridTypes[i][j] = new GridType(true, 0x2F666666);
+                    }
+                }
+                return gridTypes;
             }
-        }
-        tetrisMainView.setGridType(gridTypes);
+        };
+        matrix.setRandomColor(false);
+        tetrisMainView.setGridType(matrix);
     }
 
     public TetrisLayout setOnEventListener(OnEventListener listener) {
@@ -62,5 +74,17 @@ public class TetrisLayout extends LinearLayout {
     public TetrisLayout setScore(int score) {
         scoreTextView.setText(String.format("Score:"+score));
         return this;
+    }
+
+    public TetrisLayout switchActiveBoxStyle() {
+        tetrisMainView.moveActiveBox(GameDef.KeyType.TYPE_SWITCH_STYLE);
+        return this;
+    }
+
+    private TextView createScoreView() {
+        TextView textView = ViewUtils.createTextView(context);
+        textView.setTextSize(20);
+        textView.setTextColor(Color.RED);
+        return textView;
     }
 }

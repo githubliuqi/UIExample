@@ -11,6 +11,10 @@ public class TLog {
         Log.d(tag, log);
     }
 
+    public static final void w(String tag, String log) {
+        Log.w(tag, log);
+    }
+
     public static final void e(String tag, String log) {
         Log.e(tag, log);
     }

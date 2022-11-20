@@ -67,6 +67,7 @@ public final class EventHandler implements Handler.Callback{
         Message message = UI_HANDLER.obtainMessage();
         message.obj = bundle;
         UI_HANDLER.sendMessage(message);
+        TLog.d(TAG, String.format("sendEvent:key=%s, bundle=%s", key, bundle));
         return this;
     }
 
