@@ -26,6 +26,7 @@ public class TetrisDialog extends Dialog implements OnEventListener {
         tetrisLayout.setOnEventListener(this::onEvent);
         EventHandler.getInstance()
                 .addOnEventListener(GameDef.GAME_EVENT_OVER, this)
+                .addOnEventListener(GameDef.GAME_EVENT_KEY_UP, this)
                 .addOnEventListener(GameDef.GAME_EVENT_SCORE_UPDATE, this)
                 .addOnEventListener(GameDef.GAME_EVENT_KEY_START, this)
                 .addOnEventListener(GameDef.GAME_EVENT_KEY_STOP, this);
@@ -42,13 +43,6 @@ public class TetrisDialog extends Dialog implements OnEventListener {
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-
-        int[][] array = new int[][]{{1, 5, 0}, {3, 8, 0}, {5, 9, 2}};
-        ArrayUtils.rotate90(array);
-    }
-
-    @Override
     public void onEvent(String key, Bundle bundle) {
         if (GameDef.GAME_EVENT_KEY_START.equals(key)) {
             game.start();
@@ -57,6 +51,8 @@ public class TetrisDialog extends Dialog implements OnEventListener {
             game.stop();
         } else if (GameDef.GAME_EVENT_KEY_STOP.equals(key)) {
             game.stop();
+        } else if (GameDef.GAME_EVENT_KEY_UP.equals(key)) {
+            tetrisLayout.switchActiveBoxStyle();
         } else if (GameDef.GAME_EVENT_SCORE_UPDATE.equals(key)) {
             int score = game.getScore();
             score++;

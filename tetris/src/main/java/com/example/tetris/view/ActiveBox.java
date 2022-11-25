@@ -6,10 +6,13 @@ import android.graphics.Rect;
 import android.util.Size;
 import android.widget.RelativeLayout;
 
-import com.example.tetris.GameDef;
+import com.example.common.TLog;
+import com.example.tetris.GridType;
+import com.example.tetris.GridTypeMatrix;
 
 public class ActiveBox extends TetrisGrid {
 
+    private static final String TAG = "ActiveBox";
     private final Rect rect = new Rect();
     private final RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
             RelativeLayout.LayoutParams.WRAP_CONTENT,
@@ -55,11 +58,30 @@ public class ActiveBox extends TetrisGrid {
     }
 
     @Override
-    protected GridView onCreateGridView(GameDef.GridType type) {
+    protected GridView onCreateGridView(GridType type) {
         GridView view = super.onCreateGridView(type);
-        if (type == GameDef.GridType.TYPE_DEFAULT) {
+        if (type.isNone) {
             view.setVisibility(INVISIBLE);
         }
         return view;
+    }
+
+    /**
+     * 顺时针旋转
+     * @return
+     */
+    public ActiveBox switchStyle() {
+        int w = gridCount.getWidth();
+        int h = gridCount.getHeight();
+        if (rect.top < w - h) {
+            TLog.w(TAG, "垂直空间不足，无法翻转");
+            return this;
+        }
+        GridTypeMatrix gridType = gridTypes.rotate90();
+        setGridType(gridType);
+        rect.top = rect.bottom - w;
+        rect.right = rect.left + h;
+        setRect(rect);
+        return this;
     }
 }

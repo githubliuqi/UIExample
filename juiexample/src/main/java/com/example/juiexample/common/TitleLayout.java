@@ -1,6 +1,7 @@
 package com.example.juiexample.common;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.View;
@@ -40,6 +41,7 @@ public abstract class TitleLayout extends LinearLayout {
     private TextView createTitleView() {
         TextView textView = ViewUtils.createTextView(context);
         textView.setGravity(Gravity.LEFT);
+        textView.setTextColor(Color.WHITE);
         return textView;
     }
 

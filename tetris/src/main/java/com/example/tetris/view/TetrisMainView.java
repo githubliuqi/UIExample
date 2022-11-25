@@ -9,17 +9,17 @@ import com.example.common.TLog;
 import com.example.juiexample.event.EventHandler;
 import com.example.juiexample.event.OnEventListener;
 import com.example.tetris.GameDef;
-import com.example.tetris.GameDef.GridType;
-
-import java.util.Random;
+import com.example.tetris.GridType;
+import com.example.tetris.GridTypeMatrix;
+import com.example.tetris.GridTypeMatrixManager;
 
 public class TetrisMainView extends TetrisGrid implements OnEventListener {
 
     private static final String TAG = "TetrisMainView";
     private final ActiveBox activeBox;
     private final Rect rect = new Rect();
-    private final Random random = new Random();
     private boolean gameOver = false;
+    private GridType defaultGridType;
 
     public TetrisMainView(Context context, Size size) {
         super(context, size);
@@ -37,19 +37,21 @@ public class TetrisMainView extends TetrisGrid implements OnEventListener {
     }
 
     @Override
-    public TetrisMainView setGridType(GridType[][] gridTypes) {
+    public TetrisMainView setGridType(GridTypeMatrix gridTypes) {
         super.setGridType(gridTypes);
+        defaultGridType = gridTypes.getGridType(0, 0).clone();
         rect.left = 0;
         rect.top = 0;
         rect.right = gridCount.getWidth();
         rect.bottom = gridCount.getHeight();
-        int rand = random.nextInt(GameDef.ACTIVEBOX_TYPE_LIST.size());
-        updateActiveBoxGridType(GameDef.ACTIVEBOX_TYPE_LIST.get(rand));
+
+        updateActiveBoxGridType(GridTypeMatrixManager.getInstance().getRandomMatrix());
         addView(activeBox);
         return this;
     }
 
-    private TetrisMainView updateActiveBoxGridType(GridType[][] gridType) {
+    private TetrisMainView updateActiveBoxGridType(GridTypeMatrix gridType) {
+        gridType.randomColor();
         activeBox.setGridType(gridType);
         Rect activeBoxRect = new Rect();
         activeBoxRect.left = (gridCount.getWidth() - activeBox.gridCount.getWidth()) / 2;
@@ -64,90 +66,55 @@ public class TetrisMainView extends TetrisGrid implements OnEventListener {
         if (gameOver) {
             return this;
         }
-        Rect activeBoxRect = activeBox.getRect();
+        Rect activeBoxRect = new Rect(activeBox.getRect());
         TLog.d(TAG, rect.toString());
         TLog.d(TAG, activeBoxRect.toString());
         if (keyType == GameDef.KeyType.TYPE_MOVE_DOWN) {
-            if (coincideBottom()) {
+            activeBoxRect.top += 1;
+            activeBoxRect.bottom += 1;
+            if (checkRect(rect, activeBoxRect, activeBox.gridTypes)){
+                activeBox.moveDown();
+            } else {
                 update();
                 gameOver = checkGameOver();
                 if (gameOver) {
                     EventHandler.getInstance().sendEvent(GameDef.GAME_EVENT_OVER, null);
                     return this;
                 }
-            } else {
-                activeBox.moveDown();
             }
         } else if (keyType == GameDef.KeyType.TYPE_MOVE_LEFT) {
-            if (!coincideLeft()) {
+            activeBoxRect.left -= 1;
+            activeBoxRect.right -= 1;
+            if (checkRect(rect, activeBoxRect, activeBox.gridTypes)){
                 activeBox.moveLeft();
             }
         } else if (keyType == GameDef.KeyType.TYPE_MOVE_RIGHT) {
-            if (!coincideRight()) {
+            activeBoxRect.left += 1;
+            activeBoxRect.right += 1;
+            if (checkRect(rect, activeBoxRect, activeBox.gridTypes)){
                 activeBox.moveRight();
             }
+        } else if (keyType == GameDef.KeyType.TYPE_SWITCH_STYLE) {
+            switchStyle();
         }
         return this;
     }
 
-    private boolean coincideLeft() {
-        Rect activeBoxRect = activeBox.getRect();
-        if (activeBoxRect.left == rect.left) {
-            TLog.d(TAG, "coincideLeft");
-            return true;
+    private void switchStyle() {
+        Rect activeBoxRect = new Rect(activeBox.getRect());
+        int w = activeBox.gridCount.getWidth();
+        int h = activeBox.gridCount.getHeight();
+        if (activeBoxRect.top < w - h) {
+            TLog.w(TAG, "垂直空间不足，无法翻转");
+            return;
         }
-        for (int i = activeBoxRect.left; i < activeBoxRect.right; i++) {
-            for (int j = activeBoxRect.top; j < activeBoxRect.bottom; j++) {
-                GridView boxGrid = activeBox.mainViews[i - activeBoxRect.left][j - activeBoxRect.top];
-                GridView mainGrid = mainViews[i - 1][j];
-                if (boxGrid.getGridType() != GridType.TYPE_DEFAULT
-                        && mainGrid.getGridType() != GridType.TYPE_DEFAULT) {
-                    TLog.d(TAG, "coincideLeft");
-                    return true;
-                }
-            }
+        GridTypeMatrix gridType = activeBox.gridTypes.rotate90();
+        activeBoxRect.top = activeBoxRect.bottom - w;
+        activeBoxRect.right = activeBoxRect.left + h;
+        if (checkRect(rect, activeBoxRect, gridType)) {
+            activeBox.setGridType(gridType);
+            activeBox.setRect(activeBoxRect);
         }
-        return false;
-    }
-
-    private boolean coincideRight() {
-        Rect activeBoxRect = activeBox.getRect();
-        if (activeBoxRect.right - 1 == rect.right - 1) {
-            TLog.d(TAG, "coincideRight");
-            return true;
-        }
-        for (int i = activeBoxRect.left; i < activeBoxRect.right; i++) {
-            for (int j = activeBoxRect.top; j < activeBoxRect.bottom; j++) {
-                GridView boxGrid = activeBox.mainViews[i - activeBoxRect.left][j - activeBoxRect.top];
-                GridView mainGrid = mainViews[i + 1][j];
-                if (boxGrid.getGridType() != GridType.TYPE_DEFAULT
-                        && mainGrid.getGridType() != GridType.TYPE_DEFAULT) {
-                    TLog.d(TAG, "coincideRight");
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
-    private boolean coincideBottom() {
-        Rect activeBoxRect = activeBox.getRect();
-        if (activeBoxRect.bottom - 1 == rect.bottom - 1) {
-            TLog.d(TAG, "coincideBottom");
-            return true;
-        }
-        for (int i = activeBoxRect.left; i < activeBoxRect.right; i++) {
-            for (int j = activeBoxRect.top; j < activeBoxRect.bottom; j++) {
-                GridView boxGrid = activeBox.mainViews[i - activeBoxRect.left][j - activeBoxRect.top];
-                GridView mainGrid = mainViews[i][j+1];
-                if (boxGrid.getGridType() != GridType.TYPE_DEFAULT
-                        && mainGrid.getGridType() != GridType.TYPE_DEFAULT) {
-                    TLog.d(TAG, "coincideBottom");
-                    return true;
-                }
-            }
-        }
-        return false;
     }
 
     private void update() {
@@ -155,39 +122,42 @@ public class TetrisMainView extends TetrisGrid implements OnEventListener {
         Rect activeBoxRect = activeBox.getRect();
         for (int i = activeBoxRect.left; i < activeBoxRect.right; i++) {
             for (int j = activeBoxRect.top; j < activeBoxRect.bottom; j++) {
-                GridView view = activeBox.mainViews[i - activeBoxRect.left][j - activeBoxRect.top];
-                GridType oldType = mainViews[i][j].getGridType();
-                TLog.d(TAG, mainViews[i][j].toString());
-                if (oldType == GridType.TYPE_DEFAULT && view.getGridType() != GridType.TYPE_DEFAULT) {
-                    mainViews[i][j].setGridType(view.getGridType());
+                GridView view = activeBox.mainViews[j - activeBoxRect.top][i - activeBoxRect.left];
+                GridType oldType = mainViews[j][i].getGridType();
+                TLog.d(TAG, mainViews[j][i].toString());
+                if (oldType.isNone && !view.getGridType().isNone) {
+                    gridTypes.getGridType(j, i).clone(view.getGridType());
+                    mainViews[j][i].setGridType(gridTypes.getGridType(j, i));
                 }
             }
         }
         for (int j = gridCount.getHeight() - 1; j >= 0; j--) {
             int clearLineIndex = j;
-            for (int i = 0; i < gridCount.getWidth() - 1; i++) {
-                if (mainViews[i][j].getGridType() == GridType.TYPE_DEFAULT) {
+            for (int i = 0; i < gridCount.getWidth(); i++) {
+                if (mainViews[j][i].getGridType().isNone) {
                     clearLineIndex = -1;
                     break;
                 }
             }
-            clearLine(clearLineIndex);
+            if (clearLineIndex == j) {
+                clearLine(clearLineIndex);
+                j++;
+            }
         }
-        int rand = random.nextInt(GameDef.ACTIVEBOX_TYPE_LIST.size());
-        updateActiveBoxGridType(GameDef.ACTIVEBOX_TYPE_LIST.get(rand));
+        updateActiveBoxGridType(GridTypeMatrixManager.getInstance().getRandomMatrix());
     }
 
     private void clearLine(int lineIndex) {
-        if (lineIndex <= 0 || lineIndex >= gridCount.getHeight()) {
-            return;
-        }
+        TLog.d(TAG, "clearLine:"+lineIndex);
         EventHandler.getInstance().sendEvent(GameDef.GAME_EVENT_SCORE_UPDATE, null);
         for (int j = lineIndex; j >= 0; j--) {
-            for (int i = 0; i < gridCount.getWidth() - 1; i++) {
+            for (int i = 0; i < gridCount.getWidth(); i++) {
                 if (j == 0) {
-                    mainViews[i][j].setGridType(GridType.TYPE_DEFAULT);
+                    gridTypes.getGridType(j, i).clone(defaultGridType);
+                    mainViews[j][i].setGridType(gridTypes.getGridType(j, i));
                 } else {
-                    mainViews[i][j].setGridType(mainViews[i][j-1].getGridType());
+                    gridTypes.getGridType(j, i).clone(gridTypes.getGridType(j - 1, i));
+                    mainViews[j][i].setGridType(gridTypes.getGridType(j, i));
                 }
             }
         }
@@ -199,15 +169,37 @@ public class TetrisMainView extends TetrisGrid implements OnEventListener {
         TLog.d(TAG, "checkGameOver, activeBoxRect=" + activeBoxRect);
         for (int i = activeBoxRect.left; i < activeBoxRect.right; i++) {
             for (int j = activeBoxRect.top; j < activeBoxRect.bottom; j++) {
-                GridView boxGrid = activeBox.mainViews[i - activeBoxRect.left][j - activeBoxRect.top];
-                GridView mainGrid = mainViews[i][j];
-                if (boxGrid.getGridType() != GridType.TYPE_DEFAULT
-                        && mainGrid.getGridType() != GridType.TYPE_DEFAULT) {
+                GridView boxGrid = activeBox.mainViews[j - activeBoxRect.top][i - activeBoxRect.left];
+                GridView mainGrid = mainViews[j][i];
+                if (!boxGrid.getGridType().isNone && !mainGrid.getGridType().isNone) {
                     return true;
                 }
             }
         }
         return false;
+    }
+
+    private boolean checkRect(Rect outRect, Rect inRect, GridTypeMatrix inMatrix) {
+        // 边界检查
+        if (inRect.left < outRect.left
+                || inRect.top < outRect.top
+                || inRect.right > outRect.right
+                || inRect.bottom > outRect.bottom) {
+            return false;
+        }
+
+        // 重叠检查
+        for (int i = inRect.top; i < inRect.bottom; i++) {
+            for (int j = inRect.left; j < inRect.right; j++) {
+                GridType inGridType = inMatrix.getGridType(i - inRect.top, j - inRect.left);
+                GridType outGridType = gridTypes.getGridType(i, j);
+                TLog.d(TAG, String.format("i=%s, j=%s, inGridType=%s, outGridType=%s", i, j, inGridType.isNone, outGridType.isNone));
+                if (!inGridType.isNone && !outGridType.isNone) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
     @Override
