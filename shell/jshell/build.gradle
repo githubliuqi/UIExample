@@ -1,0 +1,19 @@
+plugins {
+    id 'java-library'
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_7
+    targetCompatibility = JavaVersion.VERSION_1_7
+}
+
+dependencies {
+    implementation fileTree(include:["*.jar"], dir:"libs")
+}
+
+/*
+aapt=/Applications/AndroidDeveloper/sdk/android-sdk-macosx/build-tools/30.0.3/aapt
+apk=C\:\\Users\\Simon_X64\\Desktop\\eal4_ble\\EsManagerToolABC.apk
+sdk=/Applications/AndroidDeveloper/sdk/android-sdk-macosx/platforms/android-31/android.jar
+sdklib=/Applications/AndroidDeveloper/sdk/android-sdk-macosx/tools/lib/sdklib-26.0.0-dev.jar
+ */

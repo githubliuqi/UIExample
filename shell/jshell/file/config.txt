@@ -1,0 +1,6 @@
+#
+#Sat Nov 26 22:32:28 CST 2022
+aapt=/Applications/AndroidDeveloper/sdk/android-sdk-macosx/build-tools/30.0.3/aapt
+apk=/Users/liuqi/Documents/git/xexample/shell/jshell/file/app.apk
+sdk=/Applications/AndroidDeveloper/sdk/android-sdk-macosx/platforms/android-31/android.jar
+sdklib=/Applications/AndroidDeveloper/sdk/android-sdk-macosx/tools/lib/sdklib-26.0.0-dev.jar
