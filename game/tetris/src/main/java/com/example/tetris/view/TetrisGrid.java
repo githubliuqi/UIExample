@@ -35,7 +35,7 @@ public class TetrisGrid extends RelativeLayout {
         mainViews = new GridView[gridCount.getHeight()][gridCount.getWidth()];
         for (int i = 0; i < mainViews.length; i++) {
             for (int j = 0; j < mainViews[0].length; j++) {
-                GridView view = onCreateGridView(gridTypes.getGridType(i, j));
+                GridView view = getGridView(gridTypes.getGridType(i, j));
                 view.setSize(gridSize);
                 mainViews[i][j] = view;
                 addView(view);
@@ -50,7 +50,7 @@ public class TetrisGrid extends RelativeLayout {
         return this;
     }
 
-    protected GridView onCreateGridView(GridType type) {
+    protected GridView getGridView(GridType type) {
         return new GridView(context, type);
     }
 }

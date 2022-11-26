@@ -34,31 +34,13 @@ public class TetrisLayout extends LinearLayout {
 
         int size = AppUtils.dip2px(20);
         tetrisMainView = new TetrisMainView(context, new Size(size, size));
-        init();
         LinearLayout.LayoutParams mainParams = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
         addView(tetrisMainView, mainParams);
 
         KeyLayout keyLayout = new KeyLayout(context);
-        LinearLayout.LayoutParams keyParams = new LayoutParams(AppUtils.dip2px(300), LayoutParams.WRAP_CONTENT);
+        LinearLayout.LayoutParams keyParams = new LayoutParams(AppUtils.dip2px(250), LayoutParams.WRAP_CONTENT);
         keyParams.topMargin = AppUtils.dip2px(20);
         addView(keyLayout, keyParams);
-    }
-
-    private void init() {
-        GridTypeMatrix matrix = new GridTypeMatrix() {
-            @Override
-            protected GridType[][] createGridType() {
-                GridType[][] gridTypes = new GridType[20][16];
-                for (int i = 0; i < gridTypes.length; i++) {
-                    for (int j = 0; j < gridTypes[0].length; j++) {
-                        gridTypes[i][j] = new GridType(true, 0x2F666666);
-                    }
-                }
-                return gridTypes;
-            }
-        };
-        matrix.setRandomColor(false);
-        tetrisMainView.setGridType(matrix);
     }
 
     public TetrisLayout setOnEventListener(OnEventListener listener) {

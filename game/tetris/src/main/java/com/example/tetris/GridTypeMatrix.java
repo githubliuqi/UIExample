@@ -6,7 +6,11 @@ import java.util.Random;
 
 public abstract class GridTypeMatrix {
 
-    private static final int[] COLORS = {Color.MAGENTA, Color.BLUE, Color.YELLOW, Color.RED, Color.GREEN};
+    private static final int[] COLORS = {
+            Color.MAGENTA, Color.BLUE, Color.YELLOW, Color.RED,
+            Color.GREEN, Color.CYAN, Color.LTGRAY, Color.LTGRAY
+    };
+
     private static final Random RANDOM = new Random(System.currentTimeMillis());
 
     protected final GridType[][] gridTypes;
@@ -53,11 +57,16 @@ public abstract class GridTypeMatrix {
     }
 
     public GridTypeMatrix rotate90() {
-        GridType[][] types = ArrayUtils.rotate90(gridTypes);
+        GridType[][] arr = new GridType[gridTypes[0].length][gridTypes.length];
+        for (int i = 0; i < gridTypes.length; i++) {
+            for (int j = 0; j < gridTypes[0].length; j++) {
+                arr[j][i] = gridTypes[gridTypes.length - i - 1][j];
+            }
+        }
         return new GridTypeMatrix() {
             @Override
             protected GridType[][] createGridType() {
-                return types;
+                return arr;
             }
         };
     }
