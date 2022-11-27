@@ -17,11 +17,10 @@ include ':app'
 include ':empty'
 include ':tetris'
 include ':common'
-include ':xlog'
 include ':bugs'
 include ':uiexample'
 include ':juiexample'
 
-// shellapk
-include ':shellapk'
-project(":shellapk").projectDir = new File("./shell/shellapk")
+apply from: "shell/shell-config.gradle"
+apply from: "asm/asm-config.gradle"
+apply from: "xlog/xlog-config.gradle"

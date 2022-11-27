@@ -1,0 +1,2 @@
+include ':shellapk'
+project(":shellapk").projectDir = new File("./shell/shellapk")

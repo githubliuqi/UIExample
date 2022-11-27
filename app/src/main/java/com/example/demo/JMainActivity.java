@@ -7,6 +7,7 @@ import android.widget.LinearLayout;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.demo.view.TetrisTestView;
+import com.example.xlog.XLog;
 
 public class JMainActivity extends AppCompatActivity {
 
@@ -18,6 +19,7 @@ public class JMainActivity extends AppCompatActivity {
         rootView = createView();
         setContentView(rootView);
         addViews();
+        XLog.log("xlog-------");
     }
 
     private LinearLayout createView() {
