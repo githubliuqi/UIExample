@@ -15,7 +15,6 @@ dependencyResolutionManagement {
 rootProject.name = "xexample"
 include ':app'
 include ':empty'
-include ':tetris'
 include ':common'
 include ':bugs'
 include ':uiexample'
@@ -24,3 +23,4 @@ include ':juiexample'
 apply from: "shell/shell-config.gradle"
 apply from: "asm/asm-config.gradle"
 apply from: "xlog/xlog-config.gradle"
+apply from: "game/game-config.gradle"

@@ -9,25 +9,11 @@ import java.util.Random;
  */
 public class GridTypeMatrixManager {
 
-    private static final GridTypeMatrixManager INSTANCE = new GridTypeMatrixManager();
-
     private final List<GridTypeMatrix> gridTypeMatrixs = new ArrayList<>();
     private final Random RANDOM = new Random();
 
-    public static final GridTypeMatrixManager getInstance() {
-        return INSTANCE;
-    }
+    public GridTypeMatrixManager() {
 
-    private GridTypeMatrixManager() {
-        addMatrix(new int[][]{{1, 1, 1, 1}});
-        addMatrix(new int[][]{{1}, {1}, {1}, {1}});
-        addMatrix(new int[][]{{1, 1}, {1, 1}});
-        addMatrix(new int[][]{{1, 0}, {1, 0}, {1, 1}});
-        addMatrix(new int[][]{{0, 1}, {0, 1}, {1, 1}});
-        addMatrix(new int[][]{{0, 1, 0}, {1, 1, 1}});
-        addMatrix(new int[][]{{1, 1, 1}, {1, 0, 1}, {1, 1, 1}});
-//        addMatrix(new int[][]{{1, 0, 1}, {0, 1, 0}, {1, 0, 1}});
-//        addMatrix(new int[][]{{1, 1, 1}, {0, 1, 0}, {1, 1, 1}});
     }
 
     /**

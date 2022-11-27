@@ -1,0 +1,2 @@
+include ':tetris'
+project(":tetris").projectDir = new File("./game/tetris")

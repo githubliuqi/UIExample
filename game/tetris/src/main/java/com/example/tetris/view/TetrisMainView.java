@@ -11,7 +11,6 @@ import com.example.juiexample.event.OnEventListener;
 import com.example.tetris.GameDef;
 import com.example.tetris.GridType;
 import com.example.tetris.GridTypeMatrix;
-import com.example.tetris.GridTypeMatrixManager;
 
 public class TetrisMainView extends TetrisGrid implements OnEventListener {
 
@@ -19,15 +18,35 @@ public class TetrisMainView extends TetrisGrid implements OnEventListener {
     private final ActiveBox activeBox;
     private final Rect rect = new Rect();
     private boolean gameOver = false;
-    private GridType defaultGridType;
+    private final GridType GRIDTYPE_DEFAULT = new GridType(true, 0x2F666666);
 
     public TetrisMainView(Context context, Size size) {
         super(context, size);
         activeBox = new ActiveBox(context, size);
+        setGridType(createGridTypeMatrix());
         EventHandler.getInstance()
                 .addOnEventListener(GameDef.GAME_EVENT_KEY_LEFT, this)
                 .addOnEventListener(GameDef.GAME_EVENT_KEY_RIGHT, this)
                 .addOnEventListener(GameDef.GAME_EVENT_KEY_DOWN, this);
+    }
+
+    private GridTypeMatrix createGridTypeMatrix() {
+        final int row = 16;
+        final int column = 12;
+        GridTypeMatrix matrix = new GridTypeMatrix() {
+            @Override
+            protected GridType[][] createGridType() {
+                GridType[][] gridTypes = new GridType[row][column];
+                for (int i = 0; i < gridTypes.length; i++) {
+                    for (int j = 0; j < gridTypes[0].length; j++) {
+                        gridTypes[i][j] = GRIDTYPE_DEFAULT.clone();
+                    }
+                }
+                return gridTypes;
+            }
+        };
+        matrix.setRandomColor(false);
+        return matrix;
     }
 
     @Override
@@ -39,26 +58,12 @@ public class TetrisMainView extends TetrisGrid implements OnEventListener {
     @Override
     public TetrisMainView setGridType(GridTypeMatrix gridTypes) {
         super.setGridType(gridTypes);
-        defaultGridType = gridTypes.getGridType(0, 0).clone();
         rect.left = 0;
         rect.top = 0;
         rect.right = gridCount.getWidth();
         rect.bottom = gridCount.getHeight();
-
-        updateActiveBoxGridType(GridTypeMatrixManager.getInstance().getRandomMatrix());
+        activeBox.resetRandGridType(gridCount);
         addView(activeBox);
-        return this;
-    }
-
-    private TetrisMainView updateActiveBoxGridType(GridTypeMatrix gridType) {
-        gridType.randomColor();
-        activeBox.setGridType(gridType);
-        Rect activeBoxRect = new Rect();
-        activeBoxRect.left = (gridCount.getWidth() - activeBox.gridCount.getWidth()) / 2;
-        activeBoxRect.right = activeBoxRect.left + activeBox.gridCount.getWidth();
-        activeBoxRect.top = 0;
-        activeBoxRect.bottom = activeBoxRect.top + activeBox.gridCount.getHeight();
-        activeBox.setRect(activeBoxRect);
         return this;
     }
 
@@ -67,8 +72,6 @@ public class TetrisMainView extends TetrisGrid implements OnEventListener {
             return this;
         }
         Rect activeBoxRect = new Rect(activeBox.getRect());
-        TLog.d(TAG, rect.toString());
-        TLog.d(TAG, activeBoxRect.toString());
         if (keyType == GameDef.KeyType.TYPE_MOVE_DOWN) {
             activeBoxRect.top += 1;
             activeBoxRect.bottom += 1;
@@ -124,7 +127,6 @@ public class TetrisMainView extends TetrisGrid implements OnEventListener {
             for (int j = activeBoxRect.top; j < activeBoxRect.bottom; j++) {
                 GridView view = activeBox.mainViews[j - activeBoxRect.top][i - activeBoxRect.left];
                 GridType oldType = mainViews[j][i].getGridType();
-                TLog.d(TAG, mainViews[j][i].toString());
                 if (oldType.isNone && !view.getGridType().isNone) {
                     gridTypes.getGridType(j, i).clone(view.getGridType());
                     mainViews[j][i].setGridType(gridTypes.getGridType(j, i));
@@ -144,7 +146,7 @@ public class TetrisMainView extends TetrisGrid implements OnEventListener {
                 j++;
             }
         }
-        updateActiveBoxGridType(GridTypeMatrixManager.getInstance().getRandomMatrix());
+        activeBox.resetRandGridType(gridCount);
     }
 
     private void clearLine(int lineIndex) {
@@ -153,7 +155,7 @@ public class TetrisMainView extends TetrisGrid implements OnEventListener {
         for (int j = lineIndex; j >= 0; j--) {
             for (int i = 0; i < gridCount.getWidth(); i++) {
                 if (j == 0) {
-                    gridTypes.getGridType(j, i).clone(defaultGridType);
+                    gridTypes.getGridType(j, i).clone(GRIDTYPE_DEFAULT);
                     mainViews[j][i].setGridType(gridTypes.getGridType(j, i));
                 } else {
                     gridTypes.getGridType(j, i).clone(gridTypes.getGridType(j - 1, i));
@@ -165,8 +167,6 @@ public class TetrisMainView extends TetrisGrid implements OnEventListener {
 
     private boolean checkGameOver() {
         Rect activeBoxRect = activeBox.getRect();
-        TLog.d(TAG, "checkGameOver, rect=" + rect);
-        TLog.d(TAG, "checkGameOver, activeBoxRect=" + activeBoxRect);
         for (int i = activeBoxRect.left; i < activeBoxRect.right; i++) {
             for (int j = activeBoxRect.top; j < activeBoxRect.bottom; j++) {
                 GridView boxGrid = activeBox.mainViews[j - activeBoxRect.top][i - activeBoxRect.left];
@@ -193,7 +193,6 @@ public class TetrisMainView extends TetrisGrid implements OnEventListener {
             for (int j = inRect.left; j < inRect.right; j++) {
                 GridType inGridType = inMatrix.getGridType(i - inRect.top, j - inRect.left);
                 GridType outGridType = gridTypes.getGridType(i, j);
-                TLog.d(TAG, String.format("i=%s, j=%s, inGridType=%s, outGridType=%s", i, j, inGridType.isNone, outGridType.isNone));
                 if (!inGridType.isNone && !outGridType.isNone) {
                     return false;
                 }

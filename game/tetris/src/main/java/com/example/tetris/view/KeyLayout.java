@@ -53,7 +53,8 @@ public class KeyLayout extends LinearLayout {
 
     private Button createButton() {
         Button button = ViewUtils.createButton(getContext());
-        button.setPadding(-1, -1, -1, -1);
+        button.setBackground(null);
+        button.setTextSize(26);
         return button;
     }
 }
