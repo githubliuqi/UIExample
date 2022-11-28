@@ -12,6 +12,7 @@ public class TetrisGame {
     private Runnable activeBoxTask;
     private ActiveBoxThread activeBoxThread;
 
+    private long gameInterval = 1000;
     private int score = 0;
 
     public TetrisGame(Context context) {
@@ -42,14 +43,8 @@ public class TetrisGame {
         }
         activeBoxThread = new ActiveBoxThread();
         activeBoxThread.setTask(activeBoxTask);
+        activeBoxThread.setInterval(gameInterval);
         activeBoxThread.start();
-        return this;
-    }
-
-    public TetrisGame pauseActiveBox() {
-        if (activeBoxThread == null) {
-            return this;
-        }
         return this;
     }
 
@@ -63,28 +58,23 @@ public class TetrisGame {
     }
 
     public TetrisGame setInterval(long interval) {
-        if (activeBoxThread == null) {
-            TLog.e(TAG, "activeBoxThread is not start");
-            return this;
+        if (interval > 0) {
+            this.gameInterval = interval;
+        } else {
         }
-        activeBoxThread.setInterval(interval);
+        if (activeBoxThread != null) {
+            activeBoxThread.setInterval(gameInterval);
+        }
         return this;
     }
 
     private static final class ActiveBoxThread extends Thread {
-        private static final int MIN_INTERVAL_MS = 200;
-        private static final int MAX_INTERVAL_MS = 1200;
-        private static final int MIDDLE_INTERVAL_MS =  (MIN_INTERVAL_MS + MAX_INTERVAL_MS) / 2;
         private volatile boolean bRunning = true;
-        long interval = MIDDLE_INTERVAL_MS;
+        long interval = 0;
         Runnable task;
 
         public ActiveBoxThread setInterval(long interval) {
-            if (interval >= MIN_INTERVAL_MS && interval <= MAX_INTERVAL_MS) {
-                this.interval = interval;
-            } else {
-                TLog.e(TAG, String.format("interval = %s, not in [%s, %s]", interval, MIN_INTERVAL_MS, MAX_INTERVAL_MS));
-            }
+            this.interval = interval;
             return this;
         }
 

@@ -31,8 +31,8 @@ public class TetrisMainView extends TetrisGrid implements OnEventListener {
     }
 
     private GridTypeMatrix createGridTypeMatrix() {
-        final int row = 16;
-        final int column = 12;
+        final int row = 20;
+        final int column = 14;
         GridTypeMatrix matrix = new GridTypeMatrix() {
             @Override
             protected GridType[][] createGridType() {

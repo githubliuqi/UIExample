@@ -20,10 +20,12 @@ public class TetrisDialog extends CustomDialog implements OnEventListener {
     private final TetrisGame game;
     private final TetrisLayout tetrisLayout;
     private final Handler uiHandler = new Handler(Looper.getMainLooper());
+    private final SettingsDialog settingsDialog;
 
     public TetrisDialog(Context context) {
         super(context);
         this.context = context;
+        settingsDialog = new SettingsDialog(context);
         tetrisLayout = new TetrisLayout(context);
         tetrisLayout.setOnEventListener(this::onEvent);
         EventHandler.getInstance()
@@ -36,7 +38,7 @@ public class TetrisDialog extends CustomDialog implements OnEventListener {
         setView(tetrisLayout);
         setTitle("俄罗斯方块");
         setRightTitle("设置");
-        setRightListener(v -> new SettingsDialog(context).show());
+        setRightListener(v -> settingsDialog.show());
         game = new TetrisGame(context);
         game.setActiveBoxTask(new Runnable() {
             @Override
@@ -65,8 +67,8 @@ public class TetrisDialog extends CustomDialog implements OnEventListener {
             game.setScore(score);
             tetrisLayout.setScore(score);
         } else if (GameDef.GAME_EVENT_SPEED_UPDATE.equals(key)) {
-            int speed = bundle.getInt("speed");
-            game.setInterval(1200 - speed);
+            int interval = bundle.getInt("refresh_interval");
+            game.setInterval(interval);
         }
     }
 

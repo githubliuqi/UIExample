@@ -2,7 +2,6 @@ package com.example.juiexample.common.dialog;
 
 import android.content.Context;
 import android.view.View;
-import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 
@@ -22,6 +21,7 @@ public class CustomBottomSheetDialog extends BottomSheetDialog {
         dialogView.setBackground(DrawableUtils.createRoundDrawable(0xFF102b6a));
         dialogView.setRightListener(v -> dismiss());
         setContentView(dialogView);
+        setCanceledOnTouchOutside(true);
     }
 
     public CustomBottomSheetDialog setView(View view) {
@@ -48,9 +48,9 @@ public class CustomBottomSheetDialog extends BottomSheetDialog {
     @Override
     protected void onStop() {
         super.onStop();
-        if (view != null && view.getParent() != null) {
-            ViewGroup viewGroup = (ViewGroup) view.getParent();
-            viewGroup.removeView(view);
-        }
+//        if (view != null && view.getParent() != null) {
+//            ViewGroup viewGroup = (ViewGroup) view.getParent();
+//            viewGroup.removeView(view);
+//        }
     }
 }

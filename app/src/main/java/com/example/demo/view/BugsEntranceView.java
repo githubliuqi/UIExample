@@ -6,25 +6,25 @@ import android.view.View;
 
 import androidx.annotation.Nullable;
 
+import com.example.bugs.BugsDialog;
 import com.example.juiexample.common.TitleButton;
-import com.example.tetris.TetrisDialog;
 
-public class TetrisTestView extends TitleButton implements View.OnClickListener {
+public class BugsEntranceView extends TitleButton implements View.OnClickListener {
 
-    public TetrisTestView(Context context) {
+    public BugsEntranceView(Context context) {
         this(context, null);
     }
 
-    public TetrisTestView(Context context, @Nullable AttributeSet attrs) {
+    public BugsEntranceView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         setButtonListener(this::onClick);
-        setTitle("Tetris");
+        setTitle("Bugs");
         setButtonText("ok");
     }
 
     @Override
     public void onClick(View v) {
-        TetrisDialog dialog = new TetrisDialog(context);
+        BugsDialog dialog = new BugsDialog(context);
         dialog.show();
     }
 }

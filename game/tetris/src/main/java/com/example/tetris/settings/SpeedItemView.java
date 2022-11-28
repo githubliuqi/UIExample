@@ -10,11 +10,15 @@ import com.example.tetris.model.GameDef;
 
 public class SpeedItemView extends TitleSeekbar {
 
+    private static final int MIN_INTERVAL_MS = 0;
+    private static final int MAX_INTERVAL_MS = 1000;
+    private static final int MIDDLE_INTERVAL_MS =  (MIN_INTERVAL_MS + MAX_INTERVAL_MS) / 2;
+
     public SpeedItemView(Context context) {
         super(context);
-        setTitle("掉落速度");
-        setMax(1000);
-        setProgress(500);
+        setTitle("刷新间隔");
+        setMax(MAX_INTERVAL_MS);
+        setProgress(MIDDLE_INTERVAL_MS);
     }
 
     @Override
@@ -22,7 +26,7 @@ public class SpeedItemView extends TitleSeekbar {
         super.onProgressChanged(seekBar, progress, fromUser);
 //        setValue(String.format("%s ms", progress));
         Bundle bundle = new Bundle();
-        bundle.putInt("speed", progress);
+        bundle.putInt("refresh_interval", progress + 100);
         EventHandler.getInstance().sendEvent(GameDef.GAME_EVENT_SPEED_UPDATE, bundle);
     }
 }

@@ -22,6 +22,7 @@ public class TitleButton extends TitleLayout {
     public TitleButton(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         button = createButton();
+        setButtonText("确定");
         addView(button);
     }
 

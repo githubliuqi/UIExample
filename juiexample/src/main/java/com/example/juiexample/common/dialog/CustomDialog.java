@@ -14,11 +14,12 @@ public class CustomDialog extends Dialog {
     private View view;
 
     public CustomDialog(@NonNull Context context) {
-        super(context, android.R.style.Theme_Light_NoTitleBar_Fullscreen);
+        super(context, android.R.style.Theme_Light_NoTitleBar);
         this.context = context;
         dialogView = new CustomDialogView(context);
         dialogView.setRightListener(v -> dismiss());
         dialogView.setBackgroundColor(0xFF13223F);
+        dialogView.findViewById(CustomDialogView.TOP_LAYOUT_ID).setBackgroundColor(0x7F426ab3);
         setContentView(dialogView);
     }
 

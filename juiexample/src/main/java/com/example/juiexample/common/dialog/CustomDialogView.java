@@ -11,8 +11,9 @@ import com.example.juiexample.utils.ViewUtils;
 
 public class CustomDialogView extends LinearLayout {
 
-    private static final int TITLEVIEW_ID = View.generateViewId();
-    private static final int RIGHTVIEW_ID = View.generateViewId();
+    public static final int TITLE_VIEW_ID = View.generateViewId();
+    public static final int RIGHT_VIEW_ID = View.generateViewId();
+    public static final int TOP_LAYOUT_ID = View.generateViewId();
 
     private Context context;
     private LinearLayout containtView;
@@ -29,6 +30,7 @@ public class CustomDialogView extends LinearLayout {
         setOrientation(LinearLayout.VERTICAL);
 
         LinearLayout topLayout = new LinearLayout(context);
+        topLayout.setId(TOP_LAYOUT_ID);
         topLayout.setOrientation(LinearLayout.HORIZONTAL);
         topLayout.setGravity(Gravity.CENTER);
 
@@ -40,8 +42,9 @@ public class CustomDialogView extends LinearLayout {
         topLayout.addView(leftView, leftParams);
 
         titleView = ViewUtils.createTextView(context);
-        titleView.setId(TITLEVIEW_ID);
+        titleView.setId(TITLE_VIEW_ID);
         titleView.setLines(1);
+        titleView.setTextSize(18);
         titleView.setTextColor(Color.WHITE);
         titleView.getPaint().setFakeBoldText(true);
         LinearLayout.LayoutParams titleParams = new LinearLayout.LayoutParams(
@@ -50,7 +53,7 @@ public class CustomDialogView extends LinearLayout {
         topLayout.addView(titleView, titleParams);
 
         rightView = ViewUtils.createTextView(context);
-        rightView.setId(RIGHTVIEW_ID);
+        rightView.setId(RIGHT_VIEW_ID);
         rightView.setText("关闭");
         rightView.setTextSize(15);
         rightView.setTextColor(Color.WHITE);
