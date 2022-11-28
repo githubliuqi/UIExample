@@ -10,9 +10,7 @@ import android.widget.TextView;
 import com.example.common.utils.AppUtils;
 import com.example.juiexample.event.OnEventListener;
 import com.example.juiexample.utils.ViewUtils;
-import com.example.tetris.GameDef;
-import com.example.tetris.GridTypeMatrix;
-import com.example.tetris.GridType;
+import com.example.tetris.model.GameDef;
 
 public class TetrisLayout extends LinearLayout {
 

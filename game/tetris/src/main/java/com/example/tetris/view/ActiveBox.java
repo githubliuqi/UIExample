@@ -6,9 +6,9 @@ import android.graphics.Rect;
 import android.util.Size;
 import android.widget.RelativeLayout;
 
-import com.example.tetris.GridType;
-import com.example.tetris.GridTypeMatrix;
-import com.example.tetris.GridTypeMatrixManager;
+import com.example.tetris.model.GridType;
+import com.example.tetris.model.GridTypeMatrix;
+import com.example.tetris.model.GridTypeMatrixManager;
 
 public class ActiveBox extends TetrisGrid {
 
@@ -32,6 +32,10 @@ public class ActiveBox extends TetrisGrid {
         matrixManager.addMatrix(new int[][]{{1, 1}, {1, 1}});
         matrixManager.addMatrix(new int[][]{{1, 0}, {1, 0}, {1, 1}});
         matrixManager.addMatrix(new int[][]{{0, 1}, {0, 1}, {1, 1}});
+        matrixManager.addMatrix(new int[][]{{0, 1, 0}, {1, 1, 1}});
+        matrixManager.addMatrix(new int[][]{{0, 1}, {1, 1}, {1, 0}});
+        matrixManager.addMatrix(new int[][]{{1, 0}, {1, 1}, {0, 1}});
+        matrixManager.addMatrix(new int[][]{{0, 1, 0}, {1, 0, 1}});
         matrixManager.addMatrix(new int[][]{{0, 1, 0}, {1, 1, 1}});
 //        matrixManager.addMatrix(new int[][]{{1, 1, 1}, {1, 0, 1}, {1, 1, 1}});
 //        matrixManager.addMatrix(new int[][]{{1, 0, 1}, {0, 1, 0}, {1, 0, 1}});

@@ -8,9 +8,9 @@ import android.util.Size;
 import com.example.common.TLog;
 import com.example.juiexample.event.EventHandler;
 import com.example.juiexample.event.OnEventListener;
-import com.example.tetris.GameDef;
-import com.example.tetris.GridType;
-import com.example.tetris.GridTypeMatrix;
+import com.example.tetris.model.GameDef;
+import com.example.tetris.model.GridType;
+import com.example.tetris.model.GridTypeMatrix;
 
 public class TetrisMainView extends TetrisGrid implements OnEventListener {
 

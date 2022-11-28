@@ -22,6 +22,7 @@ public class JMainActivity extends AppCompatActivity {
 
     private LinearLayout createView() {
         LinearLayout ll = new LinearLayout(this);
+        ll.setOrientation(LinearLayout.VERTICAL);
         ll.setBackgroundColor(0xFF13223F);
         return ll;
     }

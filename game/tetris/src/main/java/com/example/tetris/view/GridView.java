@@ -7,7 +7,7 @@ import android.util.Size;
 import android.view.View;
 import android.widget.RelativeLayout;
 
-import com.example.tetris.GridType;
+import com.example.tetris.model.GridType;
 
 public class GridView extends View {
 

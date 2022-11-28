@@ -1,4 +1,4 @@
-package com.example.tetris;
+package com.example.tetris.model;
 
 import java.util.Objects;
 

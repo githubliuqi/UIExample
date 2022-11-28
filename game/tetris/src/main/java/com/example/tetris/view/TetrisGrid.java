@@ -4,8 +4,8 @@ import android.content.Context;
 import android.util.Size;
 import android.widget.RelativeLayout;
 
-import com.example.tetris.GridTypeMatrix;
-import com.example.tetris.GridType;
+import com.example.tetris.model.GridTypeMatrix;
+import com.example.tetris.model.GridType;
 
 public class TetrisGrid extends RelativeLayout {
 

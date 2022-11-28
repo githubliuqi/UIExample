@@ -6,7 +6,7 @@ import android.widget.LinearLayout;
 
 import com.example.juiexample.event.EventHandler;
 import com.example.juiexample.utils.ViewUtils;
-import com.example.tetris.GameDef;
+import com.example.tetris.model.GameDef;
 
 public class KeyLayout extends LinearLayout {
 

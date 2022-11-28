@@ -10,7 +10,7 @@ import androidx.annotation.Nullable;
 
 import com.example.juiexample.common.IconButton;
 import com.example.juiexample.common.TitleButton;
-import com.example.juiexample.common.TitleDialog;
+import com.example.juiexample.common.dialog.CustomDialog;
 
 public class TestButton extends TitleButton implements View.OnClickListener {
 
@@ -28,7 +28,7 @@ public class TestButton extends TitleButton implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         eventHandler.sendEvent("TestButton", null);
-        TitleDialog dialog = new TitleDialog(context);
+        CustomDialog dialog = new CustomDialog(context);
         LinearLayout ll = new LinearLayout(context);
         ll.setOrientation(LinearLayout.VERTICAL);
         IconButton iconButton1 = new IconButton(context);

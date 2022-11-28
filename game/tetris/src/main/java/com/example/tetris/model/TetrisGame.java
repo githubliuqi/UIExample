@@ -1,4 +1,4 @@
-package com.example.tetris.view;
+package com.example.tetris.model;
 
 import android.content.Context;
 
@@ -62,14 +62,29 @@ public class TetrisGame {
         return this;
     }
 
-    private static final class ActiveBoxThread extends Thread {
+    public TetrisGame setInterval(long interval) {
+        if (activeBoxThread == null) {
+            TLog.e(TAG, "activeBoxThread is not start");
+            return this;
+        }
+        activeBoxThread.setInterval(interval);
+        return this;
+    }
 
+    private static final class ActiveBoxThread extends Thread {
+        private static final int MIN_INTERVAL_MS = 200;
+        private static final int MAX_INTERVAL_MS = 1200;
+        private static final int MIDDLE_INTERVAL_MS =  (MIN_INTERVAL_MS + MAX_INTERVAL_MS) / 2;
         private volatile boolean bRunning = true;
-        long interval = 500; // 回调间隔 1s
+        long interval = MIDDLE_INTERVAL_MS;
         Runnable task;
 
         public ActiveBoxThread setInterval(long interval) {
-            this.interval = interval;
+            if (interval >= MIN_INTERVAL_MS && interval <= MAX_INTERVAL_MS) {
+                this.interval = interval;
+            } else {
+                TLog.e(TAG, String.format("interval = %s, not in [%s, %s]", interval, MIN_INTERVAL_MS, MAX_INTERVAL_MS));
+            }
             return this;
         }
 

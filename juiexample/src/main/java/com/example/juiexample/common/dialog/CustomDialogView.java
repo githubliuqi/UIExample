@@ -1,46 +1,35 @@
-package com.example.juiexample.common;
+package com.example.juiexample.common.dialog;
 
-import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.view.Gravity;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-
 import com.example.juiexample.utils.ViewUtils;
 
-public class TitleDialog extends Dialog {
+public class CustomDialogView extends LinearLayout {
+
+    private static final int TITLEVIEW_ID = View.generateViewId();
+    private static final int RIGHTVIEW_ID = View.generateViewId();
 
     private Context context;
     private LinearLayout containtView;
     private TextView titleView;
-    private TextView closeView;
-    private View view;
+    private TextView rightView;
 
-    public TitleDialog(@NonNull Context context) {
-        super(context, android.R.style.Theme_Light_NoTitleBar_Fullscreen);
+    public CustomDialogView(Context context) {
+        super(context);
         this.context = context;
-        setContentView(createContentView());
-        closeView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dismiss();
-            }
-        });
+        init();
     }
 
-    private View createContentView() {
-        LinearLayout rootView = new LinearLayout(context);
-        rootView.setOrientation(LinearLayout.VERTICAL);
-        rootView.setBackgroundColor(Color.GRAY);
+    private void init() {
+        setOrientation(LinearLayout.VERTICAL);
 
         LinearLayout topLayout = new LinearLayout(context);
         topLayout.setOrientation(LinearLayout.HORIZONTAL);
-        topLayout.setBackgroundColor(Color.WHITE);
         topLayout.setGravity(Gravity.CENTER);
 
         LinearLayout.LayoutParams leftParams = new LinearLayout.LayoutParams(
@@ -51,52 +40,55 @@ public class TitleDialog extends Dialog {
         topLayout.addView(leftView, leftParams);
 
         titleView = ViewUtils.createTextView(context);
+        titleView.setId(TITLEVIEW_ID);
         titleView.setLines(1);
+        titleView.setTextColor(Color.WHITE);
         titleView.getPaint().setFakeBoldText(true);
         LinearLayout.LayoutParams titleParams = new LinearLayout.LayoutParams(
                 0, LinearLayout.LayoutParams.WRAP_CONTENT);
         titleParams.weight = 2;
         topLayout.addView(titleView, titleParams);
 
-        closeView = ViewUtils.createTextView(context);
-        closeView.setText("close");
-        closeView.setTextSize(15);
+        rightView = ViewUtils.createTextView(context);
+        rightView.setId(RIGHTVIEW_ID);
+        rightView.setText("关闭");
+        rightView.setTextSize(15);
+        rightView.setTextColor(Color.WHITE);
         LinearLayout.LayoutParams rightParams = new LinearLayout.LayoutParams(
                 0, LinearLayout.LayoutParams.WRAP_CONTENT);
         rightParams.weight = 1;
-        topLayout.addView(closeView, rightParams);
+        topLayout.addView(rightView, rightParams);
 
         LinearLayout.LayoutParams topParams = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT);
         topParams.height = 160;
-        rootView.addView(topLayout, topParams);
+        addView(topLayout, topParams);
 
         containtView = new LinearLayout(context);
+        containtView.setGravity(Gravity.CENTER);
         containtView.setPadding(10, 10, 10, 10);
-        rootView.addView(containtView);
-
-        return rootView;
+        addView(containtView);
     }
 
-    public TitleDialog setView(View view) {
-        this.view = view;
+    public CustomDialogView setView(View view) {
         containtView.removeAllViews();
         containtView.addView(view);
         return this;
     }
 
-    public TitleDialog setTitle(String title) {
+    public CustomDialogView setTitle(String title) {
         titleView.setText(title);
         return this;
     }
 
-    @Override
-    protected void onStop() {
-        super.onStop();
-        if (view != null && view.getParent() != null) {
-            ViewGroup viewGroup = (ViewGroup) view.getParent();
-            viewGroup.removeView(view);
-        }
+    public CustomDialogView setRightTitle(String title) {
+        rightView.setText(title);
+        return this;
+    }
+
+    public CustomDialogView setRightListener(OnClickListener listener) {
+        rightView.setOnClickListener(listener);
+        return this;
     }
 }
