@@ -46,4 +46,16 @@ public class TLog {
         }
         return sb.toString();
     }
+
+    public static final String toString(int[][] array) {
+        if (array == null) {
+            return "null";
+        }
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < array.length; i++) {
+            sb.append(Arrays.toString((int[])array[i]));
+            sb.append(",\n");
+        }
+        return sb.toString();
+    }
 }

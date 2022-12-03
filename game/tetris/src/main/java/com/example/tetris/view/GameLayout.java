@@ -12,15 +12,15 @@ import com.example.juiexample.event.OnEventListener;
 import com.example.juiexample.utils.ViewUtils;
 import com.example.tetris.model.GameDef;
 
-public class TetrisLayout extends LinearLayout {
+public class GameLayout extends LinearLayout {
 
     private final Context context;
     private OnEventListener onEventListener;
-    private final TetrisMainView tetrisMainView;
+    private final GameMainView tetrisMainView;
 
     private TextView scoreTextView;
 
-    public TetrisLayout(Context context) {
+    public GameLayout(Context context) {
         super(context);
         this.context = context;
         setGravity(Gravity.CENTER);
@@ -31,7 +31,7 @@ public class TetrisLayout extends LinearLayout {
         addView(scoreTextView);
 
         int size = AppUtils.dip2px(20);
-        tetrisMainView = new TetrisMainView(context, new Size(size, size));
+        tetrisMainView = new GameMainView(context, new Size(size, size));
         LinearLayout.LayoutParams mainParams = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
         addView(tetrisMainView, mainParams);
 
@@ -41,22 +41,22 @@ public class TetrisLayout extends LinearLayout {
         addView(keyLayout, keyParams);
     }
 
-    public TetrisLayout setOnEventListener(OnEventListener listener) {
+    public GameLayout setOnEventListener(OnEventListener listener) {
         onEventListener = listener;
         return this;
     }
 
-    public TetrisLayout moveActiveBox() {
+    public GameLayout moveActiveBox() {
         tetrisMainView.moveActiveBox(GameDef.KeyType.TYPE_MOVE_DOWN);
         return this;
     }
 
-    public TetrisLayout setScore(int score) {
+    public GameLayout setScore(int score) {
         scoreTextView.setText(String.format("Score:"+score));
         return this;
     }
 
-    public TetrisLayout switchActiveBoxStyle() {
+    public GameLayout switchActiveBoxStyle() {
         tetrisMainView.moveActiveBox(GameDef.KeyType.TYPE_SWITCH_STYLE);
         return this;
     }

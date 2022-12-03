@@ -1,107 +1,86 @@
 package com.example.tetris.view;
 
 import android.content.Context;
-import android.graphics.Color;
-import android.graphics.Rect;
-import android.util.Size;
-import android.widget.RelativeLayout;
+import android.graphics.Point;
+import android.view.View;
 
-import com.example.tetris.model.GridType;
-import com.example.tetris.model.GridTypeMatrix;
-import com.example.tetris.model.GridTypeMatrixManager;
+import com.example.common.TLog;
+import com.example.juiexample.common.grid.GridItemView;
+import com.example.tetris.model.GameDef;
 
-public class ActiveBox extends TetrisGrid {
+import java.util.ArrayList;
+import java.util.List;
+
+public class ActiveBox extends BaseGridView {
 
     private static final String TAG = "ActiveBox";
-    private final Rect rect = new Rect();
-    private final RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
-            RelativeLayout.LayoutParams.WRAP_CONTENT,
-            RelativeLayout.LayoutParams.WRAP_CONTENT);
-    private final GridTypeMatrixManager matrixManager = new GridTypeMatrixManager();
+    private final List<int[][]> gridTypesList = new ArrayList<>();
+    private int color;
 
-    public ActiveBox(Context context, Size size) {
-        super(context, size);
-        setBackgroundColor(Color.TRANSPARENT);
-        setLayoutParams(params);
-        initMatrix(matrixManager);
+    public ActiveBox(Context context) {
+        super(context);
+        initGridTypesList();
+        randSetGridTypes();
     }
 
-    private void initMatrix(GridTypeMatrixManager matrixManager) {
-        matrixManager.addMatrix(new int[][]{{1, 1, 1, 1}});
-        matrixManager.addMatrix(new int[][]{{1}, {1}, {1}, {1}});
-        matrixManager.addMatrix(new int[][]{{1, 1}, {1, 1}});
-        matrixManager.addMatrix(new int[][]{{1, 0}, {1, 0}, {1, 1}});
-        matrixManager.addMatrix(new int[][]{{0, 1}, {0, 1}, {1, 1}});
-        matrixManager.addMatrix(new int[][]{{0, 1, 0}, {1, 1, 1}});
-        matrixManager.addMatrix(new int[][]{{0, 1}, {1, 1}, {1, 0}});
-        matrixManager.addMatrix(new int[][]{{1, 0}, {1, 1}, {0, 1}});
-        matrixManager.addMatrix(new int[][]{{0, 1, 0}, {1, 0, 1}});
-        matrixManager.addMatrix(new int[][]{{0, 1, 0}, {1, 1, 1}});
-//        matrixManager.addMatrix(new int[][]{{1, 1, 1}, {1, 0, 1}, {1, 1, 1}});
-//        matrixManager.addMatrix(new int[][]{{1, 0, 1}, {0, 1, 0}, {1, 0, 1}});
-//        matrixManager.addMatrix(new int[][]{{1, 1, 1}, {0, 1, 0}, {1, 1, 1}});
-    }
+    private void initGridTypesList() {
+        gridTypesList.add(new int[][]{{1, 1, 1, 1}});
+        gridTypesList.add(new int[][]{{1}, {1}, {1}, {1}});
+        gridTypesList.add(new int[][]{{1, 1}, {1, 1}});
+        gridTypesList.add(new int[][]{{1, 0}, {1, 0}, {1, 1}});
+        gridTypesList.add(new int[][]{{0, 1}, {0, 1}, {1, 1}});
+        gridTypesList.add(new int[][]{{0, 1, 0}, {1, 1, 1}});
+        gridTypesList.add(new int[][]{{0, 1}, {1, 1}, {1, 0}});
+        gridTypesList.add(new int[][]{{1, 0}, {1, 1}, {0, 1}});
+        gridTypesList.add(new int[][]{{0, 1, 0}, {1, 0, 1}});
+        gridTypesList.add(new int[][]{{0, 1, 0}, {1, 1, 1}});
 
-    public ActiveBox setRect(Rect rect) {
-        this.rect.set(rect);
-        params.leftMargin = rect.left * gridSize.getWidth();
-        params.topMargin = rect.top * gridSize.getHeight();
-        setLayoutParams(params);
-        return this;
-    }
-
-    public Rect getRect() {
-        return rect;
+//        gridTypesList.add(new int[][]{{1, 1, 1}, {1, 0, 1}, {1, 1, 1}});
+//        gridTypesList.add(new int[][]{{1, 0, 1}, {0, 1, 0}, {1, 0, 1}});
+//        gridTypesList.add(new int[][]{{1, 1, 1}, {0, 1, 0}, {1, 1, 1}});
     }
 
     public ActiveBox moveLeft() {
-        rect.left -= 1;
-        rect.right -= 1;
-        setRect(rect);
+        Point p = getPoint();
+        setPoint(new Point(p.x - 1, p.y));
         return this;
     }
 
     public ActiveBox moveRight() {
-        rect.left += 1;
-        rect.right += 1;
-        setRect(rect);
+        Point p = getPoint();
+        setPoint(new Point(p.x + 1, p.y));
         return this;
     }
 
     public ActiveBox moveDown() {
-        rect.bottom += 1;
-        rect.top += 1;
-        setRect(rect);
+        Point p = getPoint();
+        setPoint(new Point(p.x, p.y + 1));
         return this;
     }
 
     @Override
-    protected GridView getGridView(GridType type) {
-        GridView view = super.getGridView(type);
-        view.setStrokeWidth(2);
-        view.setCornerRadius(2);
-        view.setStrokeColor(Color.TRANSPARENT);
-        if (type.isNone) {
-            view.setVisibility(INVISIBLE);
+    public void onUpdate(GridItemView view) {
+        int gridType = view.getGridType();
+        GameGridItemView itemView = (GameGridItemView) view;
+        if (gridType == 0) {
+            itemView.setColor(0x2F666666);
+            view.setVisibility(View.GONE);
+        } else if (gridType == 1) {
+            itemView.setColor(color);
+        } else {
+            TLog.e(TAG, "error gridType: " + gridType);
+            return;
         }
-        return view;
     }
 
-    /**
-     * 重置样式与位置
-     * @param outGridCount
-     * @return
-     */
-    public ActiveBox resetRandGridType(Size outGridCount) {
-        GridTypeMatrix gridTypeMatrix = matrixManager.getRandomMatrix();
-        gridTypeMatrix.randomColor();
-        setGridType(gridTypeMatrix);
-        Rect activeBoxRect = new Rect();
-        activeBoxRect.left = (outGridCount.getWidth() - gridCount.getWidth()) / 2;
-        activeBoxRect.right = activeBoxRect.left + gridCount.getWidth();
-        activeBoxRect.top = 0;
-        activeBoxRect.bottom = activeBoxRect.top + gridCount.getHeight();
-        setRect(activeBoxRect);
+    public ActiveBox randSetGridTypes() {
+        randSetColor();
+        int[][] gridTypeMatrix = gridTypesList.get(GameDef.RANDOM.nextInt(gridTypesList.size()));
+        setGridTypes(gridTypeMatrix);
         return this;
+    }
+
+    private void randSetColor() {
+        color = GameDef.COLORS[GameDef.RANDOM.nextInt(GameDef.COLORS.length)];
     }
 }

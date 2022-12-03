@@ -7,6 +7,7 @@ import android.widget.LinearLayout;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.demo.view.BugsEntranceView;
+import com.example.demo.view.RetroSnakerEntranceView;
 import com.example.demo.view.TetrisEntranceView;
 
 public class JMainActivity extends AppCompatActivity {
@@ -31,6 +32,7 @@ public class JMainActivity extends AppCompatActivity {
     private void addViews() {
         add(new BugsEntranceView(this));
         add(new TetrisEntranceView(this));
+        add(new RetroSnakerEntranceView(this));
     }
 
     private JMainActivity add(View view) {

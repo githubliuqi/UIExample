@@ -1,4 +1,4 @@
-package com.example.tetris.model;
+package com.example.snaker.model;
 
 import android.graphics.Color;
 
@@ -16,12 +16,13 @@ public class GameDef {
     public static final String GAME_EVENT_KEY_STOP = "game_event_key_stop";
     public static final String GAME_EVENT_KEY_PAUSE = "game_event_key_pause";
 
-    public enum KeyType {
+    public enum MoveType {
         TYPE_MOVE_LEFT,
         TYPE_MOVE_RIGHT,
         TYPE_MOVE_DOWN,
-        TYPE_SWITCH_STYLE,
+        TYPE_MOVE_UP,
     }
+
 
     public static final int[] COLORS = {
             Color.MAGENTA, Color.BLUE, Color.YELLOW, Color.RED,
@@ -30,13 +31,4 @@ public class GameDef {
 
     public static final Random RANDOM = new Random(System.currentTimeMillis());
 
-    public static final int[][] rotate90(int[][] array) {
-        int[][] arr = new int[array[0].length][array.length];
-        for (int i = 0; i < array.length; i++) {
-            for (int j = 0; j < array[0].length; j++) {
-                arr[j][i] = array[array.length - i - 1][j];
-            }
-        }
-        return arr;
-    }
 }

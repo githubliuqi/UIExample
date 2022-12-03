@@ -34,6 +34,7 @@ android {
 dependencies {
     implementation project(":asm")
     implementation project(":tetris")
+    implementation project(":retro-snaker")
     implementation project(":uiexample")
     implementation project(":juiexample")
     implementation project(":common")
