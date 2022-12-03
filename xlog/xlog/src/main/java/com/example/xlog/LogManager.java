@@ -117,7 +117,7 @@ public final class LogManager {
                 JSONObject object = new JSONObject(logger.toString());
                 jsonArray.put(object);
             }
-            jsonObject.put("ILogger-Array", jsonArray);
+            jsonObject.put("LoggerArray", jsonArray);
             logObject.put("LogManager", jsonObject);
             return logObject.toString(4);
         } catch (JSONException e) {

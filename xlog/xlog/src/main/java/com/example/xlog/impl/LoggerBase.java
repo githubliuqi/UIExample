@@ -297,14 +297,15 @@ public class LoggerBase implements ILogger {
 
         try {
             jsonObject.put("LogId", getLogId());
-            jsonObject.put("LogLevel", getLogLevel());
+            int logLevel = getLogLevel();
+            jsonObject.put("LogLevel", String.format("%s(%s)", ILogger.levelToString(logLevel), logLevel));
             jsonObject.put("LogEnable", getEnableLog());
             JSONArray jsonArray = new JSONArray();
             for (ILogChannel channel : getChannels()){
                 JSONObject object = new JSONObject(channel.toString());
                 jsonArray.put(object);
             }
-            jsonObject.put("LogChannel-Array", jsonArray);
+            jsonObject.put("LogChannelArray", jsonArray);
             logObject.put("Logger", jsonObject);
             return logObject.toString(4);
         } catch (JSONException e) {

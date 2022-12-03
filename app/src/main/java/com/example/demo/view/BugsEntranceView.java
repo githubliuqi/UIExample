@@ -19,7 +19,6 @@ public class BugsEntranceView extends TitleButton implements View.OnClickListene
         super(context, attrs);
         setButtonListener(this::onClick);
         setTitle("Bugs");
-        setButtonText("ok");
     }
 
     @Override

@@ -89,7 +89,7 @@ public class LogFileChannel extends LogChannelBase {
 
         try {
             JSONObject jsonObject = new JSONObject(super.toString());
-            jsonObject.put("logFilePath", getLogFile().getAbsolutePath());
+            jsonObject.put("LogFilePath", getLogFile().getAbsolutePath());
             return jsonObject.toString(4);
         } catch (JSONException e) {
             e.printStackTrace();

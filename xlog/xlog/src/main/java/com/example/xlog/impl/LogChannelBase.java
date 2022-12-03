@@ -53,8 +53,8 @@ public abstract class LogChannelBase implements ILogChannel {
     public String toString() {
         JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put("class", getClass());
-            jsonObject.put("Logger-logId", getLog().getLogId());
+            jsonObject.put("ChannelClass", getClass().getName());
+            jsonObject.put("LoggerLogId", getLog().getLogId());
             return jsonObject.toString(4);
         } catch (JSONException e) {
             e.printStackTrace();

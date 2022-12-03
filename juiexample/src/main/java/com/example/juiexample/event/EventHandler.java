@@ -23,7 +23,7 @@ public final class EventHandler implements Handler.Callback{
     private final Handler UI_HANDLER = new Handler(Looper.getMainLooper(), this);
     private final Map<String, List<OnEventListener>> listenerMap = new HashMap<>();
 
-    public static final EventHandler getInstance() {
+    public static EventHandler getInstance() {
         return INSTANCE;
     }
 
@@ -48,6 +48,16 @@ public final class EventHandler implements Handler.Callback{
         if (list != null) {
             list.remove(listener);
         }
+        return this;
+    }
+
+    public EventHandler removeAll() {
+        for (List<OnEventListener> list : listenerMap.values()) {
+            if (list != null) {
+                list.clear();
+            }
+        }
+        listenerMap.clear();
         return this;
     }
 

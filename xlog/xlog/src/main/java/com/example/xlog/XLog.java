@@ -8,6 +8,7 @@ public class XLog {
 
     static {
         LOGGER.error(LOGGER);
+        LOGGER.error(LogManager.getInstance());
     }
 
     public static final void i(String tag, String log) {

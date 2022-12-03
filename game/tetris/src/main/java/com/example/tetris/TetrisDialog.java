@@ -76,5 +76,6 @@ public class TetrisDialog extends CustomDialog implements OnEventListener {
     protected void onStop() {
         super.onStop();
         game.stop();
+        EventHandler.getInstance().removeAll();
     }
 }

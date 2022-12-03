@@ -19,7 +19,6 @@ public class TetrisEntranceView extends TitleButton implements View.OnClickListe
         super(context, attrs);
         setButtonListener(this::onClick);
         setTitle("Tetris");
-        setButtonText("ok");
     }
 
     @Override
