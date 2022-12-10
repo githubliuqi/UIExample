@@ -94,4 +94,9 @@ public class CustomDialogView extends LinearLayout {
         rightView.setOnClickListener(listener);
         return this;
     }
+
+    public CustomDialogView setRightVisibility(int visibility) {
+        rightView.setVisibility(visibility);
+        return this;
+    }
 }

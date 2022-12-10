@@ -3,14 +3,13 @@ package com.example.juiexample.common.grid;
 import android.content.Context;
 import android.graphics.Point;
 import android.util.Size;
-import android.view.View;
 import android.widget.RelativeLayout;
 
-public class GridItemView extends View {
+public class GridItemView extends RelativeLayout {
 
     private static final String TAG = "GridItemView";
 
-    private final Point point = new Point();
+    protected final Point point = new Point();
     private Size size = new Size(0, 0);
     private int gridType = -1;
     private OnUpdateListener onUpdateListener;

@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.demo.view.BugsEntranceView;
 import com.example.demo.view.RetroSnakerEntranceView;
+import com.example.demo.view.SheepEntranceView;
 import com.example.demo.view.TetrisEntranceView;
 
 public class JMainActivity extends AppCompatActivity {
@@ -33,6 +34,7 @@ public class JMainActivity extends AppCompatActivity {
         add(new BugsEntranceView(this));
         add(new TetrisEntranceView(this));
         add(new RetroSnakerEntranceView(this));
+        add(new SheepEntranceView(this));
     }
 
     private JMainActivity add(View view) {

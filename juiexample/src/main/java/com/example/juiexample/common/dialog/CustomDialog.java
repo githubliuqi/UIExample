@@ -44,6 +44,11 @@ public class CustomDialog extends Dialog {
         return this;
     }
 
+    public CustomDialog setRightVisibility(int visibility) {
+        dialogView.setRightVisibility(visibility);
+        return this;
+    }
+
     @Override
     protected void onStop() {
         super.onStop();

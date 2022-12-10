@@ -3,3 +3,6 @@ project(":tetris").projectDir = new File("./game/tetris")
 
 include ':retro-snaker'
 project(":retro-snaker").projectDir = new File("./game/retro-snaker")
+
+include ':sheep'
+project(":sheep").projectDir = new File("./game/sheep")
